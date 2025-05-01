@@ -67,7 +67,7 @@ Originally forked from [aesthetic-icon-picker](https://github.com/sh-sabbir/aest
 Clone / download or install with npm
 
 ```bash
-  npm install @migliori/universal-icon-picker@1.1.8
+  npm install @migliori/universal-icon-picker@1.1.9
 ```
 
 ## Usage/Examples
@@ -217,6 +217,8 @@ To choose the Fontawesome version:
 3. save the complete list in `assets/icon-libraries/font-awesome.json` and each style (brands, regular, solid) in the appropriate json file (`assets/icon-libraries/font-awesome-brands.json`, ...)
 
 4. minify the json files to `.min.json`
+
+For Fontawesome PRO users, you can use the `tools/fontawesome-icons-list-pro.html` file to retrieve the PRO icons. Read the instructions in the file.
 
 For Bootstrap icons use `tools/bootstrap-icons-list.html`. It scrapes the latest version from the website. You will need to add the version number manually to the generated json file.
 

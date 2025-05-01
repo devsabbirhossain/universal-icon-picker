@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A tool to list all available Fontawesome icons PRO by category from the Fontawesome API">
+    <title>Fontawesome icons PRO list</title>
+</head>
+
+<body>
+    <pre><code id="fontawesome-icons-list"></code></pre>
+    <script>
+        /* -----------------------------------------------------------------------
+        This script gets the latest PRO icons by category from the Font Awesome GraphQL API
+        ----------------------------------------------------------------------- */
+
+        // set the Font Awesome version here
+        const fontawesomeVersion = '6.0.0';
+
+        // --- USER ACTION REQUIRED ---
+        // To access the Font Awesome PRO GraphQL API, you MUST provide your Font Awesome API token.
+        // 1. Log in to your Font Awesome account at https://fontawesome.com/account
+        // 2. Go to the "API Tokens" section and copy your personal API token (sometimes called "API Key").
+        // 3. Paste your token below, replacing YOUR_API_TOKEN_HERE
+        //
+        // Example:
+        // const apiToken = 'YOUR_API_TOKEN_HERE';
+        //
+        // The token will be sent in the Authorization header as required by the API.
+        // For more details, see: https://fontawesome.com/docs/apis/graphql/get-started
+
+        // const apiToken = 'YOUR_API_TOKEN_HERE'; // <-- Paste your API token here
+
+        let params = {
+            "query": 'query {release (version: "' + fontawesomeVersion + '") { icons { id, membership {pro} }}}'
+        }
+        fetch('https://api.fontawesome.com', {
+            method: 'post',
+            body: new URLSearchParams(params).toString(),
+            headers: {
+                'Content-type': 'application/x-www-form-urlencoded; charset=utf-8'
+                // 'Authorization': 'Bearer ' + apiToken // <-- Uncomment this line after pasting your API token above
+            },
+            cache: 'no-store'
+        }).then(function (response) {
+            return response.json()
+        }).then(function (data) {
+            const icons = data.data.release.icons,
+            output = {
+                "solid": [],
+                "regular": [],
+                "light": [],
+                "duotone": [],
+                "thin": [],
+                "brands": []
+            }
+            icons.forEach(icon => {
+                if (icon.membership && icon.membership.pro) {
+                    icon.membership.pro.forEach(style => {
+                        if (output[style]) {
+                            output[style].push(icon.id);
+                        }
+                    });
+                }
+            });
+            document.getElementById('fontawesome-icons-list').innerHTML = JSON.stringify(output, null, 4);
+        }).catch(function (error) {
+            console.log(error);
+        });
+    </script>
+</body>
+
+</html>
